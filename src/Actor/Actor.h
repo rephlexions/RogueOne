@@ -12,4 +12,7 @@ protected:
 public:
     Actor(int x, int y, int h);
     ~Actor();
+    void moveActor(int y, int x);
+    int getYPos();
+    int getXPos();
 };
