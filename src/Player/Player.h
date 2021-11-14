@@ -1,14 +1,14 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #endif
-
 #include "../Actor/Actor.h"
+
+#include "../Position/Position.h"
 
 class Player : public Actor
 {
-private:
-    /* data */
+protected:
 public:
-    Player(int x, int y, int h);
+    Player(Position pos, int h);
     ~Player();
 };

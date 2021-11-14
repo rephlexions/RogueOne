@@ -2,17 +2,18 @@
 #define ROOM_H
 #endif
 
+#include "../Position/Position.h"
+
 class Room
 {
 protected:
-    int xPos;
-    int yPos;
+    Position position;
     int height;
     int width;
     // Monster monster[]
     // Item items[]
 public:
-    Room(int x, int y, int h, int w);
+    Room(Position pos, int h, int w);
     Room();
     ~Room();
     int getXPos();

@@ -3,6 +3,7 @@
 #include <string>
 #include "./Player/Player.h"
 #include "./Room/Room.h"
+#include "./Position/Position.h"
 
 using namespace std;
 
@@ -16,11 +17,12 @@ int drawRoom(Room room);
 
 int main()
 {
-    Player player(0, 0, 100);
+    Position position(15, 15);
+    Player player(position, 100);
     int inputChar;
     screenSetup();
     mapSetup();
-    player.moveActor(15, 15);
+    player.moveActor(position);
     // ASCII 113 -> 'q'
     while ((inputChar = getch()) != 113)
     {
@@ -41,31 +43,9 @@ int screenSetup()
 int mapSetup()
 {
     Room rooms[10];
-
-    /* mvprintw(13, 13, "---------");
-    mvprintw(14, 13, "|.......|");
-    mvprintw(15, 13, "|.......|");
-    mvprintw(16, 13, "|.......|");
-    mvprintw(17, 13, "|.......|");
-    mvprintw(18, 13, "---------"); */
-
     rooms[0] = createRoom(13, 13, 6, 8);
     rooms[1] = createRoom(40, 2, 6, 8);
     rooms[2] = createRoom(40, 10, 6, 12);
-    /* mvprintw(2, 40, "--------");
-    mvprintw(3, 40, "|.......|");
-    mvprintw(4, 40, "|.......|");
-    mvprintw(5, 40, "|.......|");
-    mvprintw(6, 40, "|.......|");
-    mvprintw(7, 40, "---------");
-
-    mvprintw(10, 40, "---------");
-    mvprintw(11, 40, "|.......|");
-    mvprintw(12, 40, "|.......|");
-    mvprintw(13, 40, "|.......|");
-    mvprintw(14, 40, "|.......|");
-    mvprintw(15, 40, "---------"); */
-
     drawRoom(rooms[0]);
     drawRoom(rooms[1]);
     drawRoom(rooms[2]);
@@ -75,7 +55,10 @@ int mapSetup()
 
 Room createRoom(int xPos, int yPos, int height, int width)
 {
-    Room room(xPos, yPos, height, width);
+    Position position;
+    position.setXPosition(xPos);
+    position.setYPosition(yPos);
+    Room room(position, height, width);
     return room;
 }
 
@@ -139,11 +122,14 @@ void handleInput(int inputChar, Player &player)
 
 int checkPosition(int newYPos, int newXPos, Actor &actor)
 {
+    Position position;
+    position.setXPosition(newXPos);
+    position.setYPosition(newYPos);
     char c = (mvinch(newYPos, newXPos) & A_CHARTEXT);
     switch (c)
     {
     case 46:
-        actor.moveActor(newYPos, newXPos);
+        actor.moveActor(position);
         break;
     default:
         move(actor.getYPos(), actor.getXPos());

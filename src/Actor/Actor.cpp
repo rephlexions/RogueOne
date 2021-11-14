@@ -1,10 +1,10 @@
 #include "./Actor.h"
 #include <ncurses.h>
 
-Actor::Actor(int x, int y, int h)
+Actor::Actor(Position pos, int h)
 {
-    this->xPos = x;
-    this->yPos = y;
+    this->position.setXPosition(pos.getXPosition());
+    this->position.setYPosition(pos.getYPosition());
     this->health = h;
 }
 
@@ -12,21 +12,21 @@ Actor::~Actor()
 {
 }
 
-void Actor::moveActor(int y = 13, int x = 13)
+void Actor::moveActor(Position pos)
 {
-    mvprintw(this->yPos, this->xPos, ".");
-    this->yPos = y;
-    this->xPos = x;
-    mvprintw(this->yPos, this->xPos, "@");
-    move(this->yPos, this->xPos);
+    mvprintw(this->position.getYPosition(), this->position.getXPosition(), ".");
+    this->position.setXPosition(pos.getXPosition());
+    this->position.setYPosition(pos.getYPosition());
+    mvprintw(this->position.getYPosition(), this->position.getXPosition(), "@");
+    move(this->position.getYPosition(), this->position.getXPosition());
 }
 
 int Actor::getYPos()
 {
-    return this->yPos;
+    return this->position.getYPosition();
 }
 
 int Actor::getXPos()
 {
-    return this->xPos;
+    return this->position.getXPosition();
 }

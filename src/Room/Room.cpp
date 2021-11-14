@@ -1,10 +1,10 @@
 
 #include "./Room.h"
 
-Room::Room(int x, int y, int h, int w)
+Room::Room(Position pos, int h, int w)
 {
-    this->xPos = x;
-    this->yPos = y;
+    this->position.setXPosition(pos.getXPosition());
+    this->position.setYPosition(pos.getYPosition());
     this->height = h;
     this->width = w;
 }
@@ -16,11 +16,11 @@ Room::~Room()
 
 int Room::getXPos()
 {
-    return this->xPos;
+    return this->position.getXPosition();
 }
 int Room::getYPos()
 {
-    return this->yPos;
+    return this->position.getYPosition();
 }
 int Room::getHeight()
 {

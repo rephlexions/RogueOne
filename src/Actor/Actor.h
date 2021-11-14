@@ -1,19 +1,19 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 #endif
+
 #include "../Position/Position.h"
 
 class Actor
 {
 protected:
-    int xPos;
-    int yPos;
+    Position position;
     int health;
 
 public:
-    Actor(int x, int y, int h);
+    Actor(Position position, int h);
     ~Actor();
-    void moveActor(int y, int x);
+    void moveActor(Position position);
     int getYPos();
     int getXPos();
 };
