@@ -1,14 +1,18 @@
 #include <ncurses.h>
 #include <iostream>
 #include <string>
-
 #include "./Player/Player.h"
+#include "./Room/Room.h"
+
 using namespace std;
 
 int screenSetup();
 int mapSetup();
 void handleInput(int inputChar, Player &player);
 int checkPosition(int newYPos, int newXPos, Actor &actor);
+
+Room createRoom(int xPos, int yPos, int height, int width);
+int drawRoom(Room room);
 
 int main()
 {
@@ -36,14 +40,19 @@ int screenSetup()
 
 int mapSetup()
 {
-    mvprintw(13, 13, "---------");
+    Room rooms[10];
+
+    /* mvprintw(13, 13, "---------");
     mvprintw(14, 13, "|.......|");
     mvprintw(15, 13, "|.......|");
     mvprintw(16, 13, "|.......|");
     mvprintw(17, 13, "|.......|");
-    mvprintw(18, 13, "---------");
+    mvprintw(18, 13, "---------"); */
 
-    mvprintw(2, 40, "--------");
+    rooms[0] = createRoom(13, 13, 6, 8);
+    rooms[1] = createRoom(40, 2, 6, 8);
+    rooms[2] = createRoom(40, 10, 6, 12);
+    /* mvprintw(2, 40, "--------");
     mvprintw(3, 40, "|.......|");
     mvprintw(4, 40, "|.......|");
     mvprintw(5, 40, "|.......|");
@@ -55,7 +64,43 @@ int mapSetup()
     mvprintw(12, 40, "|.......|");
     mvprintw(13, 40, "|.......|");
     mvprintw(14, 40, "|.......|");
-    mvprintw(15, 40, "---------");
+    mvprintw(15, 40, "---------"); */
+
+    drawRoom(rooms[0]);
+    drawRoom(rooms[1]);
+    drawRoom(rooms[2]);
+
+    return 0;
+}
+
+Room createRoom(int xPos, int yPos, int height, int width)
+{
+    Room room(xPos, yPos, height, width);
+    return room;
+}
+
+int drawRoom(Room room)
+{
+    int x;
+    int y;
+    // draw top and bottom walls
+    for (x = room.getXPos(); x < room.getXPos() + room.getWidth(); x++)
+    {
+        mvprintw(room.getYPos(), x, "-");
+        mvprintw(room.getYPos() + room.getHeight() - 1, x, "-");
+    }
+
+    //draw fllors and side walls
+    for (y = room.getYPos() + 1; y < room.getYPos() + room.getHeight() - 1; y++)
+    {
+        mvprintw(y, room.getXPos(), "|");
+        mvprintw(y, room.getXPos() + room.getWidth() - 1, "|");
+
+        for (x = room.getXPos() + 1; x < room.getXPos() + room.getWidth() - 1; x++)
+        {
+            mvprintw(y, x, ".");
+        }
+    }
 
     return 0;
 }
@@ -104,4 +149,5 @@ int checkPosition(int newYPos, int newXPos, Actor &actor)
         move(actor.getYPos(), actor.getXPos());
         break;
     }
+    return 0;
 }

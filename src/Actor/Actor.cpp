@@ -3,9 +3,9 @@
 
 Actor::Actor(int x, int y, int h)
 {
-    xPos = x;
-    yPos = y;
-    health = h;
+    this->xPos = x;
+    this->yPos = y;
+    this->health = h;
 }
 
 Actor::~Actor()
