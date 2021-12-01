@@ -1,7 +1,5 @@
 #ifndef POSTION_H
 #define POSTION_H
-#endif
-#pragma once
 class Position
 {
 protected:
@@ -17,3 +15,5 @@ public:
     int getXPosition();
     int getYPosition();
 };
+
+#endif

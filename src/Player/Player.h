@@ -1,6 +1,5 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#endif
 #include "../Actor/Actor.h"
 
 #include "../Position/Position.h"
@@ -12,3 +11,4 @@ public:
     Player(Position pos, int h);
     ~Player();
 };
+#endif

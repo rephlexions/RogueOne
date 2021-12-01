@@ -1,7 +1,5 @@
 #ifndef ROOM_H
 #define ROOM_H
-#endif
-
 #include "../Position/Position.h"
 
 class Room
@@ -26,3 +24,5 @@ public:
     void drawDoors();
     const Position *getDoors();
 };
+
+#endif
