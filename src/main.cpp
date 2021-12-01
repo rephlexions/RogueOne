@@ -52,7 +52,8 @@ int mapSetup()
     drawRoom(rooms[0]);
     drawRoom(rooms[1]);
     drawRoom(rooms[2]);
-    connectDoors(rooms[0].doors[3], rooms[2].doors[1]);
+    connectDoors(rooms[0].doors[3], rooms[2].doors[2]);
+    connectDoors(rooms[1].doors[2], rooms[0].doors[0]);
     return 0;
 }
 
@@ -90,41 +91,55 @@ int drawRoom(Room room)
 
 int connectDoors(Position start, Position end)
 {
+    int count = 0;
     Position temp;
+    Position prev;
     temp.setXPosition(start.getXPosition());
-    temp.setYPosition(end.getYPosition());
+    temp.setYPosition(start.getYPosition());
+
+    prev = temp;
 
     while (1)
     {
         // step left
         if ((abs((temp.getXPosition() - 1) - end.getXPosition()) < abs(temp.getXPosition() - end.getXPosition())) && ((mvinch(temp.getYPosition(), temp.getXPosition() - 1) & A_CHARTEXT) == 32))
         {
-            mvprintw(temp.getYPosition(), temp.getXPosition() - 1, "#");
+            prev.setXPosition(temp.getXPosition());
             temp.setXPosition(temp.getXPosition() - 1);
         }
 
         // step right
         else if ((abs((temp.getXPosition() + 1) - end.getXPosition()) < abs(temp.getXPosition() - end.getXPosition())) && ((mvinch(temp.getYPosition(), temp.getXPosition() + 1) & A_CHARTEXT) == 32))
         {
-            mvprintw(temp.getYPosition(), temp.getXPosition() + 1, "#");
+            prev.setXPosition(temp.getXPosition());
             temp.setXPosition(temp.getXPosition() + 1);
         }
         // step down
         else if ((abs((temp.getYPosition() + 1) - end.getYPosition()) < abs(temp.getYPosition() - end.getYPosition())) && ((mvinch(temp.getYPosition() + 1, temp.getXPosition()) & A_CHARTEXT) == 32))
         {
-            mvprintw(temp.getYPosition() + 1, temp.getXPosition(), "#");
+            prev.setYPosition(temp.getYPosition());
             temp.setYPosition(temp.getYPosition() + 1);
         }
         // step up
         else if ((abs((temp.getYPosition() - 1) - end.getYPosition()) < abs(temp.getYPosition() - end.getYPosition())) && ((mvinch(temp.getYPosition() - 1, temp.getXPosition()) & A_CHARTEXT) == 32))
         {
-            mvprintw(temp.getYPosition() - 1, temp.getXPosition(), "#");
+            prev.setYPosition(temp.getYPosition());
             temp.setYPosition(temp.getYPosition() - 1);
         }
         else
         {
-            return 0;
+            if (count == 0)
+            {
+                temp = prev;
+                count++;
+                continue;
+            }
+            else
+            {
+                return 0;
+            }
         }
+        mvprintw(temp.getYPosition(), temp.getXPosition(), "#");
     }
 
     return 1;
