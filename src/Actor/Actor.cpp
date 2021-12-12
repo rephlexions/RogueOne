@@ -12,9 +12,11 @@ Actor::~Actor()
 {
 }
 
-void Actor::moveActor(Position pos)
+void Actor::moveActor(Position pos, char **level)
 {
-    mvprintw(this->position.getYPosition(), this->position.getXPosition(), ".");
+    char buffer[8];
+    sprintf(buffer, "%c", level[this->position.getYPosition()][this->position.getXPosition()]);
+    mvprintw(this->position.getYPosition(), this->position.getXPosition(), buffer);
     this->position.setXPosition(pos.getXPosition());
     this->position.setYPosition(pos.getYPosition());
     mvprintw(this->position.getYPosition(), this->position.getXPosition(), "@");

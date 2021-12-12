@@ -3,50 +3,49 @@
 #include <time.h>
 #include <stdlib.h>
 
-void handleInput(int inputChar, Player &player)
+Position handleInput(int inputChar, Player &player)
 {
     int currXPos = player.getXPos();
     int currYPos = player.getYPos();
-    int newXPos = 0;
-    int newYPos = 0;
+    Position newPosition;
 
     switch (inputChar)
     {
     case 119:
-        newXPos = currXPos;
-        newYPos = currYPos - 1;
+        newPosition.setXPosition(currXPos);
+        newPosition.setYPosition(currYPos - 1);
         break;
     case 97:
-        newXPos = currXPos - 1;
-        newYPos = currYPos;
+        newPosition.setXPosition(currXPos - 1);
+        newPosition.setYPosition(currYPos);
         break;
     case 115:
-        newXPos = currXPos;
-        newYPos = currYPos + 1;
+        newPosition.setXPosition(currXPos);
+        newPosition.setYPosition(currYPos + 1);
         break;
     case 100:
-        newXPos = currXPos + 1;
-        newYPos = currYPos;
+        newPosition.setXPosition(currXPos + 1);
+        newPosition.setYPosition(currYPos);
         break;
     default:
         break;
     }
 
-    checkPosition(newYPos, newXPos, player);
+    return newPosition;
 }
 
-int checkPosition(int newYPos, int newXPos, Actor &actor)
+int checkPosition(Position newPosition, Actor &actor, char **level)
 {
     Position position;
-    position.setXPosition(newXPos);
-    position.setYPosition(newYPos);
-    char c = (mvinch(newYPos, newXPos) & A_CHARTEXT);
+    position.setXPosition(newPosition.getXPosition());
+    position.setYPosition(newPosition.getYPosition());
+    char c = (mvinch(newPosition.getYPosition(), newPosition.getXPosition()) & A_CHARTEXT);
     switch (c)
     {
     case 35:
     case 43:
     case 46:
-        actor.moveActor(position);
+        actor.moveActor(position, level);
         break;
     default:
         move(actor.getYPos(), actor.getXPos());
@@ -75,6 +74,21 @@ int mapSetup()
     connectDoors(rooms[0].doors[3], rooms[2].doors[2]);
     connectDoors(rooms[1].doors[2], rooms[0].doors[0]);
     return 0;
+}
+
+char **saveLevelPositions()
+{
+    char **positions = new char *[25];
+
+    for (int y = 0; y < 25; y++)
+    {
+        positions[y] = new char[100];
+        for (int x = 0; x < 100; x++)
+        {
+            positions[y][x] = mvinch(y, x);
+        }
+    }
+    return positions;
 }
 
 // TODO: refactor

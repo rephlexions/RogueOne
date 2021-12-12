@@ -11,7 +11,7 @@ protected:
 public:
     Actor(Position position, int h);
     ~Actor();
-    void moveActor(Position position);
+    void moveActor(Position position, char **level);
     int getYPos();
     int getXPos();
 };

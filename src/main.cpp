@@ -11,15 +11,19 @@ using namespace std;
 int main()
 {
     Position position(15, 15);
+    Position newPosition;
     Player player(position, 100);
     int inputChar;
+    char **level;
     screenSetup();
     mapSetup();
-    player.moveActor(position);
+    level = saveLevelPositions();
+    player.moveActor(position, level);
     // ASCII 113 -> 'q'
     while ((inputChar = getch()) != 113)
     {
-        handleInput(inputChar, player);
+        newPosition = handleInput(inputChar, player);
+        checkPosition(newPosition, player, level);
     }
 
     endwin();
