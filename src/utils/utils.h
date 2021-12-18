@@ -7,7 +7,7 @@
 Position handleInput(int inputChar, Player &player);
 int checkPosition(Position newPosition, Actor &actor, char **level);
 int screenSetup();
-int mapSetup();
+Room *roomSetup();
 char **saveLevelPositions();
 Room createRoom(int xPos, int yPos, int height, int width);
 int drawRoom(Room room);

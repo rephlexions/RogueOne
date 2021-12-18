@@ -3,6 +3,8 @@
 #include <time.h>
 #include <stdlib.h>
 
+Room rooms[10];
+
 Position handleInput(int inputChar, Player &player)
 {
     int currXPos = player.getXPos();
@@ -62,9 +64,8 @@ int screenSetup()
     return 0;
 }
 
-int mapSetup()
+Room *roomSetup()
 {
-    Room rooms[10];
     rooms[0] = createRoom(13, 13, 6, 8);
     rooms[1] = createRoom(40, 2, 6, 8);
     rooms[2] = createRoom(40, 10, 6, 12);
@@ -73,7 +74,7 @@ int mapSetup()
     drawRoom(rooms[2]);
     connectDoors(rooms[0].doors[3], rooms[2].doors[2]);
     connectDoors(rooms[1].doors[2], rooms[0].doors[0]);
-    return 0;
+    return rooms;
 }
 
 char **saveLevelPositions()
