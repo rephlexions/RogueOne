@@ -18,6 +18,7 @@ int main()
     int inputChar;
     screenSetup();
     Level level(3);
+    addMonsters(level);
     player.moveActor(position, level.getTiles());
     // ASCII 113 -> 'q'
     while ((inputChar = getch()) != 113)

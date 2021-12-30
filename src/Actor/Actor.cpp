@@ -8,6 +8,8 @@ Actor::Actor(Position pos, int h)
     this->health = h;
 }
 
+Actor::Actor() {}
+
 Actor::~Actor()
 {
 }
@@ -33,4 +35,10 @@ int Actor::getYPos()
 int Actor::getXPos()
 {
     return this->position.getXPosition();
+}
+
+void Actor::setPosition(int y, int x)
+{
+    this->position.setYPosition(y);
+    this->position.setXPosition(x);
 }

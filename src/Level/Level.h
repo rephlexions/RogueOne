@@ -1,23 +1,27 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 #include "../Room/Room.h"
-//#include "../Monster/Monster.h";
+#include "../Monster/Monster.h"
 class Level
 {
-private:
+protected:
     int levelNumber;
     char **tiles;
     int numberOfRooms;
-    Room *rooms;
-    //Monster **monsters;
     int numberOfMonsters;
 
 public:
+    Monster monsters[6];
+    Room *rooms;
+
     Level(int levelNumber);
     ~Level();
-    //Level createLevel(int levelNumber);
-    void setRooms(Room *rooms);
-
+    //void setRooms(Room *rooms);
     char **getTiles();
+    int getNumberOfRooms();
+    int getNumberOfMonsters();
+    void setMonsters(Monster monster, int i);
+    int getLevelNumber();
+    void setMonsterNumber(int x);
 };
 #endif

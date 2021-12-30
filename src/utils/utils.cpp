@@ -3,7 +3,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-Room rooms[10];
+Room rooms[3];
 
 Position handleInput(int inputChar, Player &player)
 {
@@ -64,7 +64,7 @@ int screenSetup()
     return 0;
 }
 
-Room *roomSetup()
+Room *roomsSetup()
 {
     rooms[0] = createRoom(13, 13, 6, 8);
     rooms[1] = createRoom(40, 2, 6, 8);
@@ -178,4 +178,78 @@ int connectDoors(Position start, Position end)
     }
 
     return 1;
+}
+
+int addMonsters(Level level)
+{
+    for (int i = 0; i < level.getNumberOfRooms(); i++)
+    {
+        if ((rand() % 2) == 0)
+        {
+            level.setMonsters(selectMonster(level.getLevelNumber()), level.getNumberOfMonsters());
+            setStartingPosition(level.monsters[level.getNumberOfMonsters()], level.rooms[i]);
+            level.setMonsterNumber(++i);
+        }
+    }
+    return 1;
+}
+
+Monster selectMonster(int levelNumber)
+{
+    int monsterType;
+    switch (levelNumber)
+    {
+    case 1:
+    case 2:
+    case 3:
+        monsterType = (rand() % 2) + 1;
+        break;
+    case 4:
+    case 5:
+        monsterType = (rand() % 2) + 2;
+        break;
+    case 6:
+        monsterType = 3;
+        break;
+    default:
+        break;
+    }
+
+    switch (monsterType)
+    {
+    case 1:
+        // spider
+        return createMonster(2, 'X', 1, 1, 1, 1);
+    case 2:
+        //goblin
+        return createMonster(5, 'G', 3, 1, 1, 2);
+    case 3:
+        //troll
+        return createMonster(15, 'T', 5, 1, 1, 1);
+    default:
+        break;
+    }
+}
+
+Monster createMonster(int h, char symbol, int attack, int speed, int defence, int pathFinding)
+{
+    Position pos;
+    pos.setXPosition(0);
+    pos.setYPosition(0);
+    Monster monster(pos, h, symbol, attack, speed, defence, pathFinding);
+
+    return monster;
+}
+
+void setStartingPosition(Monster monster, Room room)
+{
+    int x = (rand() % room.getWidth() - 2) + room.getXPos() + 1;
+    int y = (rand() % room.getHeight() - 2) + room.getYPos() + 1;
+
+    monster.setPosition(y, x);
+
+    char buffer[8];
+    sprintf(buffer, "%c", monster.getSymbol());
+
+    mvprintw(monster.getYPos(), monster.getXPos(), buffer);
 }

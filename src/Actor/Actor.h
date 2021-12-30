@@ -10,9 +10,11 @@ protected:
 
 public:
     Actor(Position position, int h);
+    Actor();
     ~Actor();
     void moveActor(Position position, char **level);
     int getYPos();
     int getXPos();
+    void setPosition(int y, int x);
 };
 #endif
