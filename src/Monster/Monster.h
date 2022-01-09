@@ -13,10 +13,13 @@ protected:
     int pathFinding;
 
 public:
+    char string[2];
+
     Monster(Position pos, int h, char symbol, int attack, int speed, int defence, int pathFinding);
     Monster();
     ~Monster();
     char getSymbol();
+    int getPathFinding();
 };
 
 #endif

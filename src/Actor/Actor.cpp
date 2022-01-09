@@ -27,12 +27,12 @@ void Actor::moveActor(Position pos, char **level)
     move(this->position.getYPosition(), this->position.getXPosition());
 }
 
-int Actor::getYPos()
+int Actor::getYPosition()
 {
     return this->position.getYPosition();
 }
 
-int Actor::getXPos()
+int Actor::getXPosition()
 {
     return this->position.getXPosition();
 }
@@ -41,4 +41,18 @@ void Actor::setPosition(int y, int x)
 {
     this->position.setYPosition(y);
     this->position.setXPosition(x);
+}
+
+void Actor::setXPosition(int x)
+{
+    this->position.setXPosition(x);
+}
+void Actor::setYPosition(int y)
+{
+    this->position.setYPosition(y);
+}
+
+Position Actor::getPosition()
+{
+    return this->position;
 }

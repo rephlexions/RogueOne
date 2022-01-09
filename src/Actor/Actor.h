@@ -13,8 +13,11 @@ public:
     Actor();
     ~Actor();
     void moveActor(Position position, char **level);
-    int getYPos();
-    int getXPos();
+    int getYPosition();
+    int getXPosition();
     void setPosition(int y, int x);
+    void setXPosition(int x);
+    void setYPosition(int y);
+    Position getPosition();
 };
 #endif

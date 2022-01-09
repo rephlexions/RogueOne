@@ -12,19 +12,17 @@ using namespace std;
 int main()
 {
 
-    Position position(15, 15);
     Position newPosition;
-    Player player(position, 100);
     int inputChar;
     screenSetup();
     Level level(3);
     addMonsters(level);
-    player.moveActor(position, level.getTiles());
     // ASCII 113 -> 'q'
     while ((inputChar = getch()) != 113)
     {
-        newPosition = handleInput(inputChar, player);
-        checkPosition(newPosition, player, level.getTiles());
+        newPosition = handleInput(inputChar, level.player);
+        checkPosition(newPosition, level.player, level.getTiles());
+        moveMonster(level);
     }
 
     endwin();

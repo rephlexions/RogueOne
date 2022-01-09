@@ -2,6 +2,7 @@
 #define LEVEL_H
 #include "../Room/Room.h"
 #include "../Monster/Monster.h"
+#include "../Player/Player.h"
 class Level
 {
 protected:
@@ -13,6 +14,7 @@ protected:
 public:
     Monster monsters[6];
     Room *rooms;
+    Player player;
 
     Level(int levelNumber);
     ~Level();

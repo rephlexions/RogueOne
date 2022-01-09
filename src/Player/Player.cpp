@@ -4,6 +4,6 @@ Player::Player(Position pos, int h) : Actor(pos, h)
 {
 }
 
-Player::~Player()
-{
-}
+Player::Player() {}
+
+Player::~Player() {}

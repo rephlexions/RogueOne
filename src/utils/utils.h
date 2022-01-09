@@ -22,9 +22,11 @@ int drawRoom(Room room);
 int connectDoors(Position start, Position end);
 
 //monster functions
-int addMonsters(Level level);
+int addMonsters(Level &level);
 Monster selectMonster(int levelNumber);
 Monster createMonster(int h, char symbol, int attack, int speed, int defence, int pathFinding);
-void setStartingPosition(Monster monster, Room room);
+void setStartingPosition(Monster &monster, Room room);
+void moveMonster(Level &level);
+void pathFindingSeek(Position &start, Position &destination);
 
 #endif

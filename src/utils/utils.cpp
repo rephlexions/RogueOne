@@ -7,8 +7,8 @@ Room rooms[3];
 
 Position handleInput(int inputChar, Player &player)
 {
-    int currXPos = player.getXPos();
-    int currYPos = player.getYPos();
+    int currXPos = player.getXPosition();
+    int currYPos = player.getYPosition();
     Position newPosition;
 
     switch (inputChar)
@@ -50,7 +50,7 @@ int checkPosition(Position newPosition, Actor &actor, char **level)
         actor.moveActor(position, level);
         break;
     default:
-        move(actor.getYPos(), actor.getXPos());
+        move(actor.getYPosition(), actor.getXPosition());
         break;
     }
     return 0;
@@ -180,7 +180,7 @@ int connectDoors(Position start, Position end)
     return 1;
 }
 
-int addMonsters(Level level)
+int addMonsters(Level &level)
 {
     for (int i = 0; i < level.getNumberOfRooms(); i++)
     {
@@ -219,7 +219,7 @@ Monster selectMonster(int levelNumber)
     {
     case 1:
         // spider
-        return createMonster(2, 'X', 1, 1, 1, 1);
+        return createMonster(2, 'X', 1, 1, 1, 2);
     case 2:
         //goblin
         return createMonster(5, 'G', 3, 1, 1, 2);
@@ -241,15 +241,59 @@ Monster createMonster(int h, char symbol, int attack, int speed, int defence, in
     return monster;
 }
 
-void setStartingPosition(Monster monster, Room room)
+void setStartingPosition(Monster &monster, Room room)
 {
     int x = (rand() % room.getWidth() - 2) + room.getXPos() + 1;
     int y = (rand() % room.getHeight() - 2) + room.getYPos() + 1;
 
     monster.setPosition(y, x);
 
-    char buffer[8];
-    sprintf(buffer, "%c", monster.getSymbol());
+    mvprintw(monster.getYPosition(), monster.getXPosition(), monster.string);
+}
 
-    mvprintw(monster.getYPos(), monster.getXPos(), buffer);
+void pathFindingSeek(Monster &start, Player &destination)
+{
+    // step left
+    if ((abs((start.getXPosition() - 1) - destination.getXPosition()) < abs(start.getXPosition() - destination.getXPosition())) && ((mvinch(start.getYPosition(), start.getXPosition() - 1) & A_CHARTEXT) == 46))
+    {
+        start.setXPosition(start.getXPosition() - 1);
+    }
+
+    // step right
+    else if ((abs((start.getXPosition() + 1) - destination.getXPosition()) < abs(start.getXPosition() - destination.getXPosition())) && ((mvinch(start.getYPosition(), start.getXPosition() + 1) & A_CHARTEXT) == 46))
+    {
+        start.setXPosition(start.getXPosition() + 1);
+    }
+    // step down
+    else if ((abs((start.getYPosition() + 1) - destination.getYPosition()) < abs(start.getYPosition() - destination.getYPosition())) && ((mvinch(start.getYPosition() + 1, start.getXPosition()) & A_CHARTEXT) == 46))
+    {
+        start.setYPosition(start.getYPosition() + 1);
+    }
+    // step up
+    else if ((abs((start.getYPosition() - 1) - destination.getYPosition()) < abs(start.getYPosition() - destination.getYPosition())) && ((mvinch(start.getYPosition() - 1, start.getXPosition()) & A_CHARTEXT) == 46))
+    {
+        start.setYPosition(start.getYPosition() - 1);
+    }
+    else
+    {
+        //do nothing
+    }
+}
+
+void moveMonster(Level &level)
+{
+    for (int i = 0; i < level.getNumberOfMonsters(); i++)
+    {
+        if (level.monsters[i].getPathFinding() == 1)
+        {
+            getch();
+            //random
+        }
+        else
+        {
+            mvprintw(level.monsters[i].getYPosition(), level.monsters[i].getXPosition(), ".");
+            pathFindingSeek(level.monsters[i], level.player);
+            mvprintw(level.monsters[i].getYPosition(), level.monsters[i].getXPosition(), level.monsters[i].string);
+        }
+    }
 }

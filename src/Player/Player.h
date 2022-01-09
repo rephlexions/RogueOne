@@ -9,6 +9,7 @@ class Player : public Actor
 protected:
 public:
     Player(Position pos, int h);
+    Player();
     ~Player();
 };
 #endif
