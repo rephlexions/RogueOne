@@ -23,6 +23,7 @@ int main()
         newPosition = handleInput(inputChar, level.player);
         checkPosition(newPosition, level.player, level.getTiles());
         moveMonster(level);
+        move(level.player.getYPosition(), level.player.getXPosition());
     }
 
     endwin();

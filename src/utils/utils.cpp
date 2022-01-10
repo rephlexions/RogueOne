@@ -219,7 +219,7 @@ Monster selectMonster(int levelNumber)
     {
     case 1:
         // spider
-        return createMonster(2, 'X', 1, 1, 1, 2);
+        return createMonster(2, 'X', 1, 1, 1, 1);
     case 2:
         //goblin
         return createMonster(5, 'G', 3, 1, 1, 2);
@@ -249,6 +249,44 @@ void setStartingPosition(Monster &monster, Room room)
     monster.setPosition(y, x);
 
     mvprintw(monster.getYPosition(), monster.getXPosition(), monster.string);
+}
+
+void pathFindingRandom(Monster &monster)
+{
+    int random = rand() % 5;
+    switch (random)
+    {
+    //step up
+    case 0:
+        if ((mvinch(monster.getYPosition() - 1, monster.getXPosition()) & A_CHARTEXT) == 46)
+        {
+            monster.setYPosition(monster.getYPosition() - 1);
+        }
+        break;
+    //step down
+    case 1:
+        if ((mvinch(monster.getYPosition() + 1, monster.getXPosition()) & A_CHARTEXT) == 46)
+        {
+            monster.setYPosition(monster.getYPosition() + 1);
+        }
+        break;
+    //step left
+    case 2:
+        if ((mvinch(monster.getYPosition(), monster.getXPosition() - 1) & A_CHARTEXT) == 46)
+        {
+            monster.setXPosition(monster.getXPosition() - 1);
+        }
+        break;
+    //step right
+    case 3:
+        if ((mvinch(monster.getYPosition(), monster.getXPosition() + 1) & A_CHARTEXT) == 46)
+        {
+            monster.setXPosition(monster.getXPosition() + 1);
+        }
+        break;
+    default:
+        break;
+    }
 }
 
 void pathFindingSeek(Monster &start, Player &destination)
@@ -284,16 +322,15 @@ void moveMonster(Level &level)
 {
     for (int i = 0; i < level.getNumberOfMonsters(); i++)
     {
+        mvprintw(level.monsters[i].getYPosition(), level.monsters[i].getXPosition(), ".");
         if (level.monsters[i].getPathFinding() == 1)
         {
-            getch();
-            //random
+            pathFindingRandom(level.monsters[i]);
         }
         else
         {
-            mvprintw(level.monsters[i].getYPosition(), level.monsters[i].getXPosition(), ".");
             pathFindingSeek(level.monsters[i], level.player);
-            mvprintw(level.monsters[i].getYPosition(), level.monsters[i].getXPosition(), level.monsters[i].string);
         }
+        mvprintw(level.monsters[i].getYPosition(), level.monsters[i].getXPosition(), level.monsters[i].string);
     }
 }

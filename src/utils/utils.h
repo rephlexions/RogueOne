@@ -28,5 +28,6 @@ Monster createMonster(int h, char symbol, int attack, int speed, int defence, in
 void setStartingPosition(Monster &monster, Room room);
 void moveMonster(Level &level);
 void pathFindingSeek(Position &start, Position &destination);
+void pathFindingRandom(Monster &monster);
 
 #endif
