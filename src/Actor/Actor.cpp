@@ -1,11 +1,13 @@
 #include "./Actor.h"
 #include <ncurses.h>
 
-Actor::Actor(Position pos, int h)
+Actor::Actor(Position pos, int h, int attack)
 {
     this->position.setXPosition(pos.getXPosition());
     this->position.setYPosition(pos.getYPosition());
     this->health = h;
+    this->attack = attack;
+    this->alive = true;
 }
 
 Actor::Actor() {}
@@ -55,4 +57,27 @@ void Actor::setYPosition(int y)
 Position Actor::getPosition()
 {
     return this->position;
+}
+
+int Actor::getHealth()
+{
+    return this->health;
+}
+
+int Actor::getAttack()
+{
+    return this->attack;
+}
+void Actor::setHealth(int health)
+{
+    this->health = health;
+}
+void Actor::setAlive(bool state)
+{
+    this->alive = state;
+}
+
+bool Actor::getAlive()
+{
+    return this->alive;
 }

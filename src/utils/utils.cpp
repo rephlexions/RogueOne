@@ -36,21 +36,31 @@ Position handleInput(int inputChar, Player &player)
     return newPosition;
 }
 
-int checkPosition(Position newPosition, Actor &actor, char **level)
+int checkPosition(Position newPosition, Level &level)
 {
     Position position;
     position.setXPosition(newPosition.getXPosition());
     position.setYPosition(newPosition.getYPosition());
+
+    Player player = level.player;
+    Monster monster = getMonsterAt(position, level.monsters);
+
     char c = (mvinch(newPosition.getYPosition(), newPosition.getXPosition()) & A_CHARTEXT);
     switch (c)
     {
     case 35:
     case 43:
     case 46:
-        actor.moveActor(position, level);
+        player.moveActor(position, level.getTiles());
+        break;
+    case 88:
+    case 71:
+    case 84:
+
+        combat(player, monster, 1);
         break;
     default:
-        move(actor.getYPosition(), actor.getXPosition());
+        move(player.getYPosition(), player.getXPosition());
         break;
     }
     return 0;
@@ -322,6 +332,8 @@ void moveMonster(Level &level)
 {
     for (int i = 0; i < level.getNumberOfMonsters(); i++)
     {
+        if (level.monsters[i].getAlive() == 0)
+            continue;
         mvprintw(level.monsters[i].getYPosition(), level.monsters[i].getXPosition(), ".");
         if (level.monsters[i].getPathFinding() == 1)
         {
@@ -333,4 +345,21 @@ void moveMonster(Level &level)
         }
         mvprintw(level.monsters[i].getYPosition(), level.monsters[i].getXPosition(), level.monsters[i].string);
     }
+}
+
+Monster getMonsterAt(Position position, Monster *monsters)
+{
+    for (int i = 0; i < 6; i++)
+    {
+        if ((position.getYPosition() == monsters[i].getYPosition()) && (position.getXPosition() == monsters[i].getXPosition()))
+        {
+            return monsters[i];
+        }
+    }
+}
+
+void killMonster(Monster monster)
+{
+    mvprintw(monster.getYPosition(), monster.getXPosition(), ".");
+    monster.setAlive(false);
 }

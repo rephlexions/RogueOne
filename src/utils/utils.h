@@ -10,7 +10,7 @@ int screenSetup();
 
 //player functions
 Position handleInput(int inputChar, Player &player);
-int checkPosition(Position newPosition, Actor &actor, char **level);
+int checkPosition(Position newPosition, Level &level);
 
 //level functions
 Room *roomsSetup();
@@ -29,5 +29,8 @@ void setStartingPosition(Monster &monster, Room room);
 void moveMonster(Level &level);
 void pathFindingSeek(Position &start, Position &destination);
 void pathFindingRandom(Monster &monster);
+void killMonster(Monster monster);
+
+int combat(Player &player, Monster &monster, int order);
 
 #endif

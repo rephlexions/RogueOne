@@ -7,9 +7,11 @@ class Actor
 protected:
     Position position;
     int health;
+    int attack;
+    bool alive;
 
 public:
-    Actor(Position position, int h);
+    Actor(Position position, int h, int attack);
     Actor();
     ~Actor();
     void moveActor(Position position, char **level);
@@ -19,5 +21,10 @@ public:
     void setXPosition(int x);
     void setYPosition(int y);
     Position getPosition();
+    int getHealth();
+    int getAttack();
+    void setHealth(int health);
+    void setAlive(bool state);
+    bool getAlive();
 };
 #endif

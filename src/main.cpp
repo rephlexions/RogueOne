@@ -21,7 +21,7 @@ int main()
     while ((inputChar = getch()) != 113)
     {
         newPosition = handleInput(inputChar, level.player);
-        checkPosition(newPosition, level.player, level.getTiles());
+        checkPosition(newPosition, level);
         moveMonster(level);
         move(level.player.getYPosition(), level.player.getXPosition());
     }
