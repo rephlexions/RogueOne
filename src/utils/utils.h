@@ -29,8 +29,8 @@ void setStartingPosition(Monster &monster, Room room);
 void moveMonster(Level &level);
 void pathFindingSeek(Position &start, Position &destination);
 void pathFindingRandom(Monster &monster);
-void killMonster(Monster monster);
+void killMonster(Monster *monster);
 
-int combat(Player &player, Monster &monster, int order);
+int combat(Player &player, Monster *monster, int order);
 
 #endif

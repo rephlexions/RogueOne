@@ -14,7 +14,7 @@ protected:
 public:
     char string[2];
 
-    Monster(Position pos, int health, bool alive, char symbol, int attack, int speed, int defence, int pathFinding);
+    Monster(Position pos, int health, char symbol, int attack, int speed, int defence, int pathFinding);
     Monster();
     ~Monster();
     char getSymbol();

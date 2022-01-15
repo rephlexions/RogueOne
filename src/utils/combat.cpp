@@ -1,18 +1,18 @@
 #include "./utils.h"
 
-int combat(Player &player, Monster &monster, int order)
+int combat(Player &player, Monster *monster, int order)
 {
     //player attack
     if (order == 1)
     {
-        int monsterHealth = monster.getHealth();
-        monster.setHealth(monsterHealth - player.getAttack());
-        if (monster.getHealth() > 0)
+        int monsterHealth = monster->getHealth();
+        monster->setHealth(monsterHealth - player.getAttack());
+        if (monster->getHealth() > 0)
         {
             int playerHealth = player.getHealth();
-            player.setHealth(playerHealth - monster.getAttack());
+            player.setHealth(playerHealth - monster->getAttack());
         }
-        else
+        else if (monster->getHealth() <= 0)
         {
             killMonster(monster);
         }
@@ -21,11 +21,11 @@ int combat(Player &player, Monster &monster, int order)
     else
     {
         int playerHealth = player.getHealth();
-        player.setHealth(playerHealth - monster.getAttack());
+        player.setHealth(playerHealth - monster->getAttack());
         if (player.getHealth() > 0)
         {
-            int monsterHealth = monster.getHealth();
-            monster.setHealth(monsterHealth - player.getAttack());
+            int monsterHealth = monster->getHealth();
+            monster->setHealth(monsterHealth - player.getAttack());
         }
     }
 }

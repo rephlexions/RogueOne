@@ -5,7 +5,7 @@
 Level::Level(int levelNumber)
 {
     Position position(15, 15);
-    Player player(position, 100);
+    Player player(position, 100, 2);
 
     this->levelNumber = levelNumber;
     this->numberOfRooms = 3;

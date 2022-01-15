@@ -77,7 +77,7 @@ void Actor::setAlive(bool state)
     this->alive = state;
 }
 
-bool Actor::getAlive()
+bool Actor::isAlive()
 {
     return this->alive;
 }

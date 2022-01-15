@@ -25,6 +25,6 @@ public:
     int getAttack();
     void setHealth(int health);
     void setAlive(bool state);
-    bool getAlive();
+    bool isAlive();
 };
 #endif
