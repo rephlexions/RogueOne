@@ -4,8 +4,8 @@
 
 Level::Level(int levelNumber)
 {
-    Position position(15, 15);
-    Player player(position, 100, 2);
+    Position position(0, 0);
+    Player player(position, 10, 2, 10, 0);
 
     this->levelNumber = levelNumber;
     this->numberOfRooms = 3;
@@ -14,7 +14,8 @@ Level::Level(int levelNumber)
     this->tiles = saveLevelPositions();
     this->player = player;
 
-    this->player.moveActor(position, this->getTiles());
+    placePlayer(this->rooms, &this->player);
+    //this->player.moveActor(position, this->getTiles());
 }
 
 Level::~Level()

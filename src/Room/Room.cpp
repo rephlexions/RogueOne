@@ -14,22 +14,6 @@ Room::~Room()
 {
 }
 
-int Room::getXPos()
-{
-    return this->position.getXPosition();
-}
-int Room::getYPos()
-{
-    return this->position.getYPosition();
-}
-int Room::getHeight()
-{
-    return this->height;
-}
-int Room::getWidth()
-{
-    return this->width;
-}
 void Room::setDoors(int topX, int topY, int bottomX, int bottomY, int leftX, int leftY, int rightX, int rightY)
 {
     this->doors[0].setXPosition(topX);
@@ -74,6 +58,42 @@ void Room::drawDoors()
     {
         mvprintw(this->doors[i].getYPosition(), this->doors[i].getXPosition(), "+");
     }
+}
+
+int Room::getXPos()
+{
+    return this->position.getXPosition();
+}
+int Room::getYPos()
+{
+    return this->position.getYPosition();
+}
+
+void Room::setXPos(int x)
+{
+    this->position.setXPosition(x);
+}
+void Room::setYPos(int y)
+{
+    this->position.setYPosition(y);
+}
+
+int Room::getHeight()
+{
+    return this->height;
+}
+int Room::getWidth()
+{
+    return this->width;
+}
+
+void Room::setHeight(int h)
+{
+    this->height = h;
+}
+void Room::setWidth(int w)
+{
+    this->width = w;
 }
 
 const Position *Room::getDoors()

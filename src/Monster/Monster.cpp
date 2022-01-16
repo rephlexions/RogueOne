@@ -6,7 +6,6 @@ Monster::Monster(Position pos, int health, char symbol, int attack, int speed, i
     this->symbol = symbol;
     this->speed = speed;
     this->defence = defence;
-    //TODO: implement random path finding
     this->pathFinding = pathFinding;
 
     sprintf(this->string, "%c", symbol);

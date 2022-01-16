@@ -59,7 +59,7 @@ int checkPosition(Position newPosition, Level &level)
     position.setXPosition(newPosition.getXPosition());
     position.setYPosition(newPosition.getYPosition());
 
-    Player player = level.player;
+    Player *player = &level.player;
     Monster *monster = getMonsterAt(position, level.monsters);
 
     char c = (mvinch(newPosition.getYPosition(), newPosition.getXPosition()) & A_CHARTEXT);
@@ -73,33 +73,25 @@ int checkPosition(Position newPosition, Level &level)
     case 88:
     case 71:
     case 84:
-        combat(level.player, monster, 1);
+        combat(player, monster, 1);
         break;
     default:
-        move(player.getYPosition(), player.getXPosition());
+        move(player->getYPosition(), player->getXPosition());
         break;
     }
     return 0;
 }
 
-int screenSetup()
-{
-    srand(time(NULL));
-    initscr();
-    noecho();
-    return 0;
-}
-
 Room *roomsSetup()
 {
-    rooms[0] = createRoom(13, 13, 6, 8);
-    rooms[1] = createRoom(40, 2, 6, 8);
-    rooms[2] = createRoom(40, 10, 6, 12);
-    drawRoom(rooms[0]);
-    drawRoom(rooms[1]);
-    drawRoom(rooms[2]);
-    connectDoors(rooms[0].doors[3], rooms[2].doors[2]);
-    connectDoors(rooms[1].doors[2], rooms[0].doors[0]);
+    for (int i = 0; i < 6; i++)
+    {
+        rooms[i] = createRoom(i);
+        drawRoom(rooms[i]);
+    }
+
+    //connectDoors(rooms[0].doors[3], rooms[2].doors[2]);
+    //connectDoors(rooms[1].doors[2], rooms[0].doors[0]);
     return rooms;
 }
 
@@ -118,26 +110,63 @@ char **saveLevelPositions()
     return positions;
 }
 
-// TODO: refactor
-Room createRoom(int xPos, int yPos, int height, int width)
+Room createRoom(int grid)
 {
     int topX, topY, bottomX, bottomY, leftX, leftY, rightX, rightY;
-    Position position;
-    position.setXPosition(xPos);
-    position.setYPosition(yPos);
-    Room room(position, height, width);
+    Position position(0, 0);
+    Room room(position, 0, 0);
+
+    switch (grid)
+    {
+    case 0:
+        room.setXPos(0);
+        room.setYPos(0);
+        break;
+    case 1:
+        room.setXPos(33);
+        room.setYPos(0);
+        break;
+    case 2:
+        room.setXPos(66);
+        room.setYPos(0);
+        break;
+    case 3:
+        room.setXPos(0);
+        room.setYPos(14);
+        break;
+    case 4:
+        room.setXPos(33);
+        room.setYPos(14);
+        break;
+    case 5:
+        room.setXPos(66);
+        room.setYPos(14);
+        break;
+    default:
+        break;
+    }
+
+    room.setHeight(rand() % 6 + 4); // max size 9
+    room.setWidth(rand() % 14 + 4); // max size 17
+
+    //room offset
+    int offsetX = rand() % (29 - room.getWidth() + 1);
+    int offsetY = rand() % (9 - room.getHeight() + 1);
+    room.setXPos(room.getXPos() + offsetX);
+    room.setYPos(room.getYPos() + offsetY);
+
     //top door
-    topX = rand() % (width - 2) + room.getXPos() + 1;
+    topX = rand() % (room.getWidth() - 2) + room.getXPos() + 1;
     topY = room.getYPos();
     //left door
-    leftY = rand() % (height - 2) + room.getYPos() + 1;
+    leftY = rand() % (room.getHeight() - 2) + room.getYPos() + 1;
     leftX = room.getXPos();
     //bottom door
-    bottomX = rand() % (width - 2) + room.getXPos() + 1;
+    bottomX = rand() % (room.getWidth() - 2) + room.getXPos() + 1;
     bottomY = room.getYPos() + room.getHeight() - 1;
     //right door
-    rightY = rand() % (height - 2) + room.getYPos() + 1;
-    rightX = room.getXPos() + width - 1;
+    rightY = rand() % (room.getHeight() - 2) + room.getYPos() + 1;
+    rightX = room.getXPos() + room.getWidth() - 1;
     room.setDoors(topX, topY, leftX, leftY, bottomX, bottomY, rightX, rightY);
 
     return room;
@@ -361,4 +390,12 @@ void moveMonster(Level &level)
         }
         mvprintw(level.monsters[i].getYPosition(), level.monsters[i].getXPosition(), level.monsters[i].string);
     }
+}
+
+void placePlayer(Room *rooms, Player *player)
+{
+    player->setXPosition(rooms[3].getXPos() + 1);
+    player->setYPosition(rooms[3].getYPos() + 1);
+    mvprintw(player->getYPosition(), player->getXPosition(), "@");
+    move(player->getYPosition(), player->getXPosition());
 }

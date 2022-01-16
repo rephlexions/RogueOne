@@ -17,6 +17,7 @@ int main()
     screenSetup();
     Level level(3);
     addMonsters(level);
+    printGameHub(level);
     // ASCII 113 -> 'q'
     while ((inputChar = getch()) != 113)
     {
@@ -24,6 +25,7 @@ int main()
         checkPosition(newPosition, level);
         moveMonster(level);
         move(level.player.getYPosition(), level.player.getXPosition());
+        printGameHub(level);
     }
 
     endwin();

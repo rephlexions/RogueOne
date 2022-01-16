@@ -6,18 +6,21 @@
 #include "../Monster/Monster.h"
 #include "../Level/Level.h"
 
+//screen functions
 int screenSetup();
+int printGameHub(Level &level);
 
 //player functions
 Position handleInput(int inputChar, Player &player);
 int checkPosition(Position newPosition, Level &level);
+void placePlayer(Room *rooms, Player *player);
 
 //level functions
 Room *roomsSetup();
 char **saveLevelPositions();
 
 //room functions
-Room createRoom(int xPos, int yPos, int height, int width);
+Room createRoom(int grid);
 int drawRoom(Room room);
 int connectDoors(Position start, Position end);
 
@@ -31,6 +34,6 @@ void pathFindingSeek(Position &start, Position &destination);
 void pathFindingRandom(Monster &monster);
 void killMonster(Monster *monster);
 
-int combat(Player &player, Monster *monster, int order);
+int combat(Player *player, Monster *monster, int order);
 
 #endif
