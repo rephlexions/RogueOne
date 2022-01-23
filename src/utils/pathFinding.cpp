@@ -10,10 +10,20 @@ void addPositionYX(int **frontier, int frontierCount, int startY, int startX)
     frontier[frontierCount][1] = startX;
 }
 
+bool checkWalls(int y, int x)
+{
+    char temp = (mvinch(y, x) & A_CHARTEXT);
+    if (temp == 46 || temp == 124 || temp == 45)
+    {
+        return false;
+    }
+    return true;
+}
+
 int addNeighbors(int **frontier, int ***cameFrom, int frontierCount, int y, int x)
 {
     //north
-    if (y > 0 && cameFrom[y - 1][x][0] < 0)
+    if (y > 0 && cameFrom[y - 1][x][0] < 0 && checkWalls(y - 1, x))
     {
         addPositionYX(frontier, frontierCount, y - 1, x);
         frontierCount++;
@@ -22,7 +32,7 @@ int addNeighbors(int **frontier, int ***cameFrom, int frontierCount, int y, int 
     }
 
     //south
-    if (y < (MAX_HEIGHT - 1) && cameFrom[y + 1][x][0] < 0)
+    if (y < (MAX_HEIGHT - 1) && cameFrom[y + 1][x][0] < 0 && checkWalls(y + 1, x))
     {
         addPositionYX(frontier, frontierCount, y + 1, x);
         frontierCount++;
@@ -31,7 +41,7 @@ int addNeighbors(int **frontier, int ***cameFrom, int frontierCount, int y, int 
     }
 
     //east
-    if (x < (MAX_WIDTH - 1) && cameFrom[y][x + 1][0] < 0)
+    if (x < (MAX_WIDTH - 1) && cameFrom[y][x + 1][0] < 0 && checkWalls(y, x + 1))
     {
         addPositionYX(frontier, frontierCount, y, x + 1);
         frontierCount++;
@@ -40,7 +50,7 @@ int addNeighbors(int **frontier, int ***cameFrom, int frontierCount, int y, int 
     }
 
     //west
-    if (x > 0 && cameFrom[y][x - 1][0] < 0)
+    if (x > 0 && cameFrom[y][x - 1][0] < 0 && checkWalls(y - 1, x))
     {
         addPositionYX(frontier, frontierCount, y, x - 1);
         frontierCount++;
@@ -53,7 +63,7 @@ int addNeighbors(int **frontier, int ***cameFrom, int frontierCount, int y, int 
 
 void pathFinding(Position start, Position end)
 {
-    int x, y;
+    int x, y, tempY;
     int frontierIndex = 0;
     int frontierCount = 0;
     int **frontier = (int **)malloc(sizeof(int *) * MAX_HEIGHT * MAX_WIDTH);
@@ -98,8 +108,9 @@ void pathFinding(Position start, Position end)
 
     while (y != start.getYPosition() || x != start.getXPosition())
     {
+        tempY = y;
         y = cameFrom[y][x][0];
-        x = cameFrom[y][x][1];
+        x = cameFrom[tempY][x][1];
         mvprintw(y, x, "+");
         //getch();
     }
