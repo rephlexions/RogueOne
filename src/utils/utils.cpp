@@ -89,7 +89,7 @@ Room *roomsSetup()
         rooms[i] = createRoom(i);
         drawRoom(rooms[i]);
     }
-
+    pathFinding(rooms[0].doors[3], rooms[1].doors[1]);
     //connectDoors(rooms[0].doors[3], rooms[2].doors[2]);
     //connectDoors(rooms[1].doors[2], rooms[0].doors[0]);
     return rooms;
@@ -99,10 +99,10 @@ char **saveLevelPositions()
 {
     char **positions = new char *[25];
 
-    for (int y = 0; y < 25; y++)
+    for (int y = 0; y < MAX_HEIGHT; y++)
     {
         positions[y] = new char[100];
-        for (int x = 0; x < 100; x++)
+        for (int x = 0; x < MAX_WIDTH; x++)
         {
             positions[y][x] = mvinch(y, x);
         }

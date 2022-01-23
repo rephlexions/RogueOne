@@ -6,6 +6,9 @@
 #include "../Monster/Monster.h"
 #include "../Level/Level.h"
 
+static const int MAX_HEIGHT = 25;
+static const int MAX_WIDTH = 100;
+
 //screen functions
 int screenSetup();
 int printGameHub(Level &level);
@@ -23,6 +26,9 @@ char **saveLevelPositions();
 Room createRoom(int grid);
 int drawRoom(Room room);
 int connectDoors(Position start, Position end);
+void addPositionYX(int **frontier, int frontierCount, int startY, int startX);
+int addNeighbors(int **frontier, int ***cameFrom, int frontierCount, int y, int x);
+void pathFinding(Position start, Position end);
 
 //monster functions
 int addMonsters(Level &level);
