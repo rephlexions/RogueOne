@@ -22,7 +22,7 @@ bool checkWalls(int y, int x)
 
 int addNeighbors(int **frontier, int ***cameFrom, int frontierCount, int y, int x)
 {
-    //north
+    // north
     if (y > 0 && cameFrom[y - 1][x][0] < 0 && checkWalls(y - 1, x))
     {
         addPositionYX(frontier, frontierCount, y - 1, x);
@@ -31,7 +31,7 @@ int addNeighbors(int **frontier, int ***cameFrom, int frontierCount, int y, int 
         cameFrom[y - 1][x][1] = x;
     }
 
-    //south
+    // south
     if (y < (MAX_HEIGHT - 1) && cameFrom[y + 1][x][0] < 0 && checkWalls(y + 1, x))
     {
         addPositionYX(frontier, frontierCount, y + 1, x);
@@ -40,7 +40,7 @@ int addNeighbors(int **frontier, int ***cameFrom, int frontierCount, int y, int 
         cameFrom[y + 1][x][1] = x;
     }
 
-    //east
+    // east
     if (x < (MAX_WIDTH - 1) && cameFrom[y][x + 1][0] < 0 && checkWalls(y, x + 1))
     {
         addPositionYX(frontier, frontierCount, y, x + 1);
@@ -49,8 +49,8 @@ int addNeighbors(int **frontier, int ***cameFrom, int frontierCount, int y, int 
         cameFrom[y][x + 1][1] = x;
     }
 
-    //west
-    if (x > 0 && cameFrom[y][x - 1][0] < 0 && checkWalls(y - 1, x))
+    // west
+    if (x > 0 && cameFrom[y][x - 1][0] < 0 && checkWalls(y, x - 1))
     {
         addPositionYX(frontier, frontierCount, y, x - 1);
         frontierCount++;
@@ -112,7 +112,6 @@ void pathFinding(Position start, Position end)
         y = cameFrom[y][x][0];
         x = cameFrom[tempY][x][1];
         mvprintw(y, x, "+");
-        //getch();
     }
 }
 

@@ -18,7 +18,10 @@ int main()
     Level level(3);
     addMonsters(level);
     printGameHub(level);
-    // ASCII 113 -> 'q'
+    connectDoors(level);
+    level.tiles = saveLevelPositions();
+    placePlayer(level.rooms, &level.player);
+
     while ((inputChar = getch()) != 113)
     {
         newPosition = handleInput(inputChar, level.player);

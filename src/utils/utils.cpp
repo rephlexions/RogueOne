@@ -3,7 +3,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-Room rooms[3];
+Room rooms[6];
 
 Position handleInput(int inputChar, Player &player)
 {
@@ -86,12 +86,9 @@ Room *roomsSetup()
 {
     for (int i = 0; i < 6; i++)
     {
-        rooms[i] = createRoom(i);
+        rooms[i] = createRoom(i, 4);
         drawRoom(rooms[i]);
     }
-    pathFinding(rooms[0].doors[3], rooms[1].doors[1]);
-    //connectDoors(rooms[0].doors[3], rooms[2].doors[2]);
-    //connectDoors(rooms[1].doors[2], rooms[0].doors[0]);
     return rooms;
 }
 
@@ -110,11 +107,12 @@ char **saveLevelPositions()
     return positions;
 }
 
-Room createRoom(int grid)
+Room createRoom(int grid, int numberOfDoors)
 {
     int topX, topY, bottomX, bottomY, leftX, leftY, rightX, rightY;
     Position position(0, 0);
-    Room room(position, 0, 0);
+    Room room(position, 0, 0, numberOfDoors);
+    Door door(position, false);
 
     switch (grid)
     {
@@ -149,22 +147,27 @@ Room createRoom(int grid)
     room.setHeight(rand() % 6 + 4); // max size 9
     room.setWidth(rand() % 14 + 4); // max size 17
 
-    //room offset
-    int offsetX = rand() % (29 - room.getWidth() + 1);
-    int offsetY = rand() % (9 - room.getHeight() + 1);
+    // room offset
+    int offsetX = rand() % (30 - room.getWidth() + 1);
+    int offsetY = rand() % (10 - room.getHeight() + 1);
     room.setXPos(room.getXPos() + offsetX);
     room.setYPos(room.getYPos() + offsetY);
 
-    //top door
+    for (int i = 0; i < numberOfDoors; i++)
+    {
+        room.doors[i] = door;
+    }
+
+    // top door
     topX = rand() % (room.getWidth() - 2) + room.getXPos() + 1;
     topY = room.getYPos();
-    //left door
+    // left door
     leftY = rand() % (room.getHeight() - 2) + room.getYPos() + 1;
     leftX = room.getXPos();
-    //bottom door
+    // bottom door
     bottomX = rand() % (room.getWidth() - 2) + room.getXPos() + 1;
     bottomY = room.getYPos() + room.getHeight() - 1;
-    //right door
+    // right door
     rightY = rand() % (room.getHeight() - 2) + room.getYPos() + 1;
     rightX = room.getXPos() + room.getWidth() - 1;
     room.setDoors(topX, topY, leftX, leftY, bottomX, bottomY, rightX, rightY);
@@ -179,60 +182,37 @@ int drawRoom(Room room)
     return 0;
 }
 
-int connectDoors(Position start, Position end)
+void connectDoors(Level &level)
 {
-    int count = 0;
-    Position temp;
-    Position prev;
-    temp.setXPosition(start.getXPosition());
-    temp.setYPosition(start.getYPosition());
+    int randRoom, randDoor, count;
+    Room room = level.rooms[0];
 
-    prev = temp;
-
-    while (1)
+    for (int i = 0; i < level.getNumberOfRooms(); i++)
     {
-        // step left
-        if ((abs((temp.getXPosition() - 1) - end.getXPosition()) < abs(temp.getXPosition() - end.getXPosition())) && ((mvinch(temp.getYPosition(), temp.getXPosition() - 1) & A_CHARTEXT) == 32))
+        for (int j = 0; j < level.rooms[i].numberOfDoors; j++)
         {
-            prev.setXPosition(temp.getXPosition());
-            temp.setXPosition(temp.getXPosition() - 1);
-        }
-
-        // step right
-        else if ((abs((temp.getXPosition() + 1) - end.getXPosition()) < abs(temp.getXPosition() - end.getXPosition())) && ((mvinch(temp.getYPosition(), temp.getXPosition() + 1) & A_CHARTEXT) == 32))
-        {
-            prev.setXPosition(temp.getXPosition());
-            temp.setXPosition(temp.getXPosition() + 1);
-        }
-        // step down
-        else if ((abs((temp.getYPosition() + 1) - end.getYPosition()) < abs(temp.getYPosition() - end.getYPosition())) && ((mvinch(temp.getYPosition() + 1, temp.getXPosition()) & A_CHARTEXT) == 32))
-        {
-            prev.setYPosition(temp.getYPosition());
-            temp.setYPosition(temp.getYPosition() + 1);
-        }
-        // step up
-        else if ((abs((temp.getYPosition() - 1) - end.getYPosition()) < abs(temp.getYPosition() - end.getYPosition())) && ((mvinch(temp.getYPosition() - 1, temp.getXPosition()) & A_CHARTEXT) == 32))
-        {
-            prev.setYPosition(temp.getYPosition());
-            temp.setYPosition(temp.getYPosition() - 1);
-        }
-        else
-        {
-            if (count == 0)
+            if (level.rooms[i].doors[j].isDoorConnected() == true)
             {
-                temp = prev;
-                count++;
                 continue;
             }
-            else
+            count = 0;
+            while (count < 10)
             {
-                return 0;
+                randRoom = rand() % level.getNumberOfRooms();
+                randDoor = rand() % level.rooms[randRoom].numberOfDoors;
+
+                if (level.rooms[randRoom].doors[randDoor].isDoorConnected() == 1 || randRoom == 1)
+                {
+                    count++;
+                    continue;
+                }
+                pathFinding(level.rooms[randRoom].doors[randDoor].getDoorPosition(), level.rooms[i].doors[j].getDoorPosition());
+                level.rooms[randRoom].doors[randDoor].setDoorConnected(true);
+                level.rooms[i].doors[j].setDoorConnected(true);
+                break;
             }
         }
-        mvprintw(temp.getYPosition(), temp.getXPosition(), "#");
     }
-
-    return 1;
 }
 
 int addMonsters(Level &level)
@@ -276,10 +256,10 @@ Monster selectMonster(int levelNumber)
         // spider
         return createMonster(2, 'X', 1, 1, 1, 1);
     case 2:
-        //goblin
+        // goblin
         return createMonster(5, 'G', 3, 1, 1, 2);
     case 3:
-        //troll
+        // troll
         return createMonster(15, 'T', 5, 1, 1, 1);
     default:
         break;
@@ -311,28 +291,28 @@ void pathFindingRandom(Monster &monster)
     int random = rand() % 5;
     switch (random)
     {
-    //step up
+    // step up
     case 0:
         if ((mvinch(monster.getYPosition() - 1, monster.getXPosition()) & A_CHARTEXT) == 46)
         {
             monster.setYPosition(monster.getYPosition() - 1);
         }
         break;
-    //step down
+    // step down
     case 1:
         if ((mvinch(monster.getYPosition() + 1, monster.getXPosition()) & A_CHARTEXT) == 46)
         {
             monster.setYPosition(monster.getYPosition() + 1);
         }
         break;
-    //step left
+    // step left
     case 2:
         if ((mvinch(monster.getYPosition(), monster.getXPosition() - 1) & A_CHARTEXT) == 46)
         {
             monster.setXPosition(monster.getXPosition() - 1);
         }
         break;
-    //step right
+    // step right
     case 3:
         if ((mvinch(monster.getYPosition(), monster.getXPosition() + 1) & A_CHARTEXT) == 46)
         {
@@ -369,7 +349,7 @@ void pathFindingSeek(Monster &start, Player &destination)
     }
     else
     {
-        //do nothing
+        // do nothing
     }
 }
 

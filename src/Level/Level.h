@@ -7,7 +7,6 @@ class Level
 {
 protected:
     int levelNumber;
-    char **tiles;
     int numberOfRooms;
     int numberOfMonsters;
 
@@ -15,10 +14,10 @@ public:
     Monster monsters[6];
     Room *rooms;
     Player player;
+    char **tiles;
 
     Level(int levelNumber);
     ~Level();
-    //void setRooms(Room *rooms);
     char **getTiles();
     int getNumberOfRooms();
     int getNumberOfMonsters();

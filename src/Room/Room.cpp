@@ -1,12 +1,13 @@
 #include "./Room.h"
 #include <ncurses.h>
 
-Room::Room(Position pos, int h, int w)
+Room::Room(Position pos, int h, int w, int numberOfDoors)
 {
     this->position.setXPosition(pos.getXPosition());
     this->position.setYPosition(pos.getYPosition());
     this->height = h;
     this->width = w;
+    this->numberOfDoors = numberOfDoors;
 }
 Room::Room() {}
 
@@ -96,7 +97,7 @@ void Room::setWidth(int w)
     this->width = w;
 }
 
-const Position *Room::getDoors()
+const Door *Room::getDoors()
 {
     return doors;
 }
