@@ -49,7 +49,7 @@ Monster *getMonsterAt(Position position, Monster *monsters)
 
 void killMonster(Monster *monster)
 {
-    mvprintw(monster->getYPosition(), monster->getXPosition(), ".");
+    // mvprintw(monster->getYPosition(), monster->getXPosition(), ".");
     monster->setAlive(false);
 }
 
@@ -76,7 +76,7 @@ int checkPosition(Position newPosition, Level &level)
         combat(player, monster, 1);
         break;
     default:
-        move(player->getYPosition(), player->getXPosition());
+        // move(player->getYPosition(), player->getXPosition());
         break;
     }
     return 0;
@@ -112,7 +112,7 @@ Room createRoom(int grid, int numberOfDoors)
     int topX, topY, bottomX, bottomY, leftX, leftY, rightX, rightY;
     Position position(0, 0);
     Room room(position, 0, 0, numberOfDoors);
-    Door door(position, false);
+    Door door(position, false, false);
 
     switch (grid)
     {
@@ -283,7 +283,7 @@ void setStartingPosition(Monster &monster, Room room)
 
     monster.setPosition(y, x);
 
-    mvprintw(monster.getYPosition(), monster.getXPosition(), monster.string);
+    // mvprintw(monster.getYPosition(), monster.getXPosition(), monster.string);
 }
 
 void pathFindingRandom(Monster &monster)
@@ -359,7 +359,7 @@ void moveMonster(Level &level)
     {
         if (level.monsters[i].isAlive() == 0)
             continue;
-        mvprintw(level.monsters[i].getYPosition(), level.monsters[i].getXPosition(), ".");
+        // mvprintw(level.monsters[i].getYPosition(), level.monsters[i].getXPosition(), ".");
         if (level.monsters[i].getPathFinding() == 1)
         {
             pathFindingRandom(level.monsters[i]);
@@ -368,7 +368,7 @@ void moveMonster(Level &level)
         {
             pathFindingSeek(level.monsters[i], level.player);
         }
-        mvprintw(level.monsters[i].getYPosition(), level.monsters[i].getXPosition(), level.monsters[i].string);
+        // mvprintw(level.monsters[i].getYPosition(), level.monsters[i].getXPosition(), level.monsters[i].string);
     }
 }
 
@@ -376,6 +376,38 @@ void placePlayer(Room *rooms, Player *player)
 {
     player->setXPosition(rooms[3].getXPos() + 1);
     player->setYPosition(rooms[3].getYPos() + 1);
-    mvprintw(player->getYPosition(), player->getXPosition(), "@");
-    move(player->getYPosition(), player->getXPosition());
+    // mvprintw(player->getYPosition(), player->getXPosition(), "@");
+    // move(player->getYPosition(), player->getXPosition());
+}
+
+void drawPlayer(Player player)
+{
+    mvprintw(player.getYPosition(), player.getXPosition(), "@");
+    move(player.getYPosition(), player.getXPosition());
+}
+
+void drawMonster(Monster monster)
+{
+    if (monster.isAlive())
+    {
+        mvprintw(monster.getYPosition(), monster.getXPosition(), monster.string);
+    }
+}
+
+void drawLevel(Level level)
+{
+    for (int y = 0; y < MAX_HEIGHT; y++)
+    {
+        for (int x = 0; x < MAX_WIDTH; x++)
+        {
+            mvaddch(y, x, level.tiles[y][x]);
+        }
+    }
+
+    for (int i = 0; i < level.getNumberOfMonsters(); i++)
+    {
+        drawMonster(level.monsters[i]);
+    }
+
+    drawPlayer(level.player);
 }

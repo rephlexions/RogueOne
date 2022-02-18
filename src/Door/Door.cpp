@@ -1,9 +1,10 @@
 #include "./Door.h"
 
-Door::Door(Position position, bool connected)
+Door::Door(Position position, bool connected, bool closed)
 {
     this->position = position;
     this->connected = connected;
+    this->closed = closed;
 }
 
 Door::Door()
@@ -32,17 +33,26 @@ int Door::getYPosition()
     return this->position.getYPosition();
 }
 
-bool Door::isDoorConnected()
-{
-    return this->connected;
-}
-
 Position Door::getDoorPosition()
 {
     return this->position;
 }
 
+bool Door::isDoorConnected()
+{
+    return this->connected;
+}
+
 void Door::setDoorConnected(bool state)
 {
     this->connected = state;
+}
+
+bool Door::isDoorClosed()
+{
+    return this->closed;
+}
+bool Door::setDoorClosed(bool state)
+{
+    this->closed = state;
 }

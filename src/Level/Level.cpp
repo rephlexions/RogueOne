@@ -17,6 +17,10 @@ Level::Level(int levelNumber)
     placePlayer(this->rooms, &this->player);
 }
 
+Level::Level()
+{
+}
+
 Level::~Level()
 {
 }

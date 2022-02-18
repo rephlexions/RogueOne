@@ -41,7 +41,7 @@ void Room::drawWalls()
         mvprintw(this->getYPos() + this->getHeight() - 1, x, "-");
     }
 
-    //draw floors and side walls
+    // draw floors and side walls
     for (y = this->getYPos() + 1; y < this->getYPos() + this->getHeight() - 1; y++)
     {
         mvprintw(y, this->getXPos(), "|");
@@ -57,7 +57,7 @@ void Room::drawDoors()
 {
     for (int i = 0; i < 4; i++)
     {
-        mvprintw(this->doors[i].getYPosition(), this->doors[i].getXPosition(), "+");
+        mvprintw(this->doors[i].getYPosition(), this->doors[i].getXPosition(), "$");
     }
 }
 

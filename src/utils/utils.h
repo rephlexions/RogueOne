@@ -18,10 +18,12 @@ int printGameHub(Level &level);
 Position handleInput(int inputChar, Player &player);
 int checkPosition(Position newPosition, Level &level);
 void placePlayer(Room *rooms, Player *player);
+void drawPlayer(Player player);
 
 // level functions
 Room *roomsSetup();
 char **saveLevelPositions();
+void drawLevel(Level level);
 
 // room functions
 Room createRoom(int grid, int numberOfDoors);
@@ -40,6 +42,7 @@ void moveMonster(Level &level);
 void pathFindingSeek(Position &start, Position &destination);
 void pathFindingRandom(Monster &monster);
 void killMonster(Monster *monster);
+void drawMonster(Monster monster);
 
 int combat(Player *player, Monster *monster, int order);
 

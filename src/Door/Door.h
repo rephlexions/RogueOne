@@ -8,9 +8,10 @@ class Door
 protected:
     Position position;
     bool connected;
+    bool closed;
 
 public:
-    Door(Position position, bool connected);
+    Door(Position position, bool connected, bool closed);
     Door();
     ~Door();
     void setXPosition(int x);
@@ -20,5 +21,7 @@ public:
     Position getDoorPosition();
     bool isDoorConnected();
     void setDoorConnected(bool state);
+    bool isDoorClosed();
+    bool setDoorClosed(bool state);
 };
 #endif

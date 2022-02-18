@@ -17,6 +17,7 @@ public:
     char **tiles;
 
     Level(int levelNumber);
+    Level();
     ~Level();
     char **getTiles();
     int getNumberOfRooms();
